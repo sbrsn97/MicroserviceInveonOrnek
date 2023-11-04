@@ -17,6 +17,7 @@ namespace Inveon.Web
             SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
 
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddAuthentication(options =>

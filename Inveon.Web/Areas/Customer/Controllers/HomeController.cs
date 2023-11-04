@@ -1,5 +1,7 @@
 ﻿using Inveon.Web.Models;
+using Inveon.Web.Services;
 using Inveon.Web.Services.IServices;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -12,10 +14,12 @@ namespace Inveon.Web.Areas.Customer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IProductService _productService;
-        public HomeController(ILogger<HomeController> logger, IProductService productService)
+        private readonly ICartService _cartService;
+        public HomeController(ILogger<HomeController> logger, IProductService productService, ICartService cartService)
         {
             _logger = logger;
             _productService = productService;
+            _cartService = cartService;
         }
 
         public async Task<IActionResult> Index()
@@ -38,6 +42,45 @@ namespace Inveon.Web.Areas.Customer.Controllers
                 model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
             }
             return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("Details")]
+        [Authorize]
+        public async Task<IActionResult> DetailsPost(ProductDto productDto)
+        {
+            var UserId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value;
+
+            CartHeaderDto cartHeaderDto = new CartHeaderDto();
+            cartHeaderDto.UserId = UserId;
+            CartDto cartDto = new CartDto();
+            cartDto.CartHeader = cartHeaderDto;
+
+
+            CartDetailsDto cartDetails = new CartDetailsDto()
+            {
+                Count = productDto.Count,
+                ProductId = productDto.ProductId
+            };
+
+            var resp = await _productService.GetProductByIdAsync<ResponseDto>(productDto.ProductId, "");
+            if (resp != null && resp.IsSuccess)
+            {
+                cartDetails.Product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(resp.Result));
+            }
+            List<CartDetailsDto> cartDetailsDtos = new();
+            cartDetailsDtos.Add(cartDetails);
+            cartDto.CartDetails = cartDetailsDtos;
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var addToCartResp = await _cartService.AddToCartAsync2<ResponseDto>(cartDto, accessToken);
+
+            if (addToCartResp != null && addToCartResp.IsSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(productDto);
         }
 
         public IActionResult Privacy()
