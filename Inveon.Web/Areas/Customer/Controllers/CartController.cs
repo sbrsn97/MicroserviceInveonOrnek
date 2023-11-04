@@ -59,6 +59,7 @@ namespace Inveon.Web.Areas.Customer.Controllers
             }
             return cartDto;
         }
+
         [HttpPost]
         [ActionName("ApplyCoupon")]
         public async Task<IActionResult> ApplyCoupon(CartDto cartDto)
@@ -89,6 +90,16 @@ namespace Inveon.Web.Areas.Customer.Controllers
             return View();
         }
 
-
+        public async Task<IActionResult> Remove(int cartDetailsId)
+        {
+            var userId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value;
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _cartService.RemoveFromCartAsync<ResponseDto>(cartDetailsId, accessToken);
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(CartIndex));
+            }
+            return View();
+        }
     }
 }
