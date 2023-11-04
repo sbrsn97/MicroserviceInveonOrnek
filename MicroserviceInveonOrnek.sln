@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inveon.Services.ShoppingCar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inveon.MessageBus", "Inveon.MessageBus\Inveon.MessageBus.csproj", "{94BBEF39-0AC8-49C5-B4C6-1CDDA45D24B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inveon.Services.CouponAPI", "Inveon.Services.CouponAPI\Inveon.Services.CouponAPI.csproj", "{9F3EAFAF-ED02-476F-BC4F-FD12BCBB9FB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{94BBEF39-0AC8-49C5-B4C6-1CDDA45D24B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94BBEF39-0AC8-49C5-B4C6-1CDDA45D24B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94BBEF39-0AC8-49C5-B4C6-1CDDA45D24B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F3EAFAF-ED02-476F-BC4F-FD12BCBB9FB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F3EAFAF-ED02-476F-BC4F-FD12BCBB9FB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F3EAFAF-ED02-476F-BC4F-FD12BCBB9FB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F3EAFAF-ED02-476F-BC4F-FD12BCBB9FB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{9486AE27-C8EB-42C1-A93D-2E90DB847BC0} = {182AE330-8684-445F-B8F6-98D6BF77C883}
 		{CA8F0006-EC54-4231-8EB5-1746B68AC161} = {182AE330-8684-445F-B8F6-98D6BF77C883}
 		{94BBEF39-0AC8-49C5-B4C6-1CDDA45D24B0} = {0E7F0FF1-97BC-432F-82A1-404FE6DA911F}
+		{9F3EAFAF-ED02-476F-BC4F-FD12BCBB9FB1} = {182AE330-8684-445F-B8F6-98D6BF77C883}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3407DF12-8AEC-4460-82D4-CD450C8D1C6C}
