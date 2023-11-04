@@ -14,7 +14,7 @@ namespace Inveon.Services.ShoppingCartAPI.RabbitMQ
 
         public RabbitMQCartMessageSender()
         {
-            _hostname = "localhost";
+            _hostname = "127.0.0.1";
             _password = "guest";
             _username = "guest";
         }
