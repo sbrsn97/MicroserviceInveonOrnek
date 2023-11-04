@@ -28,6 +28,17 @@ namespace Inveon.Web.Areas.Customer.Controllers
             }
             return View(list);
         }
+        [Authorize]
+        public async Task<IActionResult> Details(int productId)
+        {
+            ProductDto model = new();
+            var response = await _productService.GetProductByIdAsync<ResponseDto>(productId, "");
+            if (response != null && response.IsSuccess)
+            {
+                model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+            }
+            return View(model);
+        }
 
         public IActionResult Privacy()
         {
