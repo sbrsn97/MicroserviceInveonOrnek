@@ -8,6 +8,7 @@ using Iyzipay.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace Inveon.Services.ShoppingCartAPI.Controllers
 {
@@ -34,11 +35,8 @@ namespace Inveon.Services.ShoppingCartAPI.Controllers
         [HttpPost]
         [Authorize]
         public async Task<object> Checkout([FromBody] CheckoutHeaderDto checkoutHeader)
-
-
-
-
         {
+            double couponDiscount = 0;
             try
             {
                 CartDto cartDto = await _cartRepository.GetCartByUserId(checkoutHeader.UserId);
@@ -57,6 +55,7 @@ namespace Inveon.Services.ShoppingCartAPI.Controllers
                         _response.DisplayMessage = "Coupon Price has changed, please confirm";
                         return _response;
                     }
+                    couponDiscount = coupon.DiscountAmount;
                 }
 
                 checkoutHeader.CartDetails = cartDto.CartDetails;
@@ -65,7 +64,7 @@ namespace Inveon.Services.ShoppingCartAPI.Controllers
 
                 ////rabbitMQ
 
-                Payment payment = OdemeIslemi(checkoutHeader);
+                Payment payment = OdemeIslemi(checkoutHeader, couponDiscount);
                 _rabbitMQCartMessageSender.SendMessage(checkoutHeader, "checkoutqueue");
                 await _cartRepository.ClearCart(checkoutHeader.UserId);
             }
@@ -76,25 +75,23 @@ namespace Inveon.Services.ShoppingCartAPI.Controllers
             }
             return _response;
         }
-
-        public Payment OdemeIslemi(CheckoutHeaderDto checkoutHeaderDto)
+        public Payment OdemeIslemi(CheckoutHeaderDto checkoutHeaderDto, double couponDiscount)
         {
 
             CartDto cartDto = _cartRepository.GetCartByUserIdNonAsync(checkoutHeaderDto.UserId);
 
             Options options = new Options();
 
-            options.ApiKey = "sandbox-8zkTEIzQ8rikWsvPkL76V8kAvo4DpYuz";
-            options.SecretKey = "sandbox-56FjiYYrjkAuSqENtt0k8b7Ei03s8X61";
+            //options.ApiKey = "sandbox-8zkTEIzQ8rikWsvPkL76V8kAvo4DpYuz"; Hocanin iyzico anahtari
+            options.ApiKey = "sandbox-HvEkrbc2TSvAcxk3PtEgdAQSI2CCq1W7";
+            //options.SecretKey = "sandbox-56FjiYYrjkAuSqENtt0k8b7Ei03s8X61"; Hocanin iyzico anahtari
+            options.SecretKey = "sandbox-Cmf9glR0awiuLlWIVhEww8WC8BjPhzJ5";
             options.BaseUrl = "https://sandbox-api.iyzipay.com";
 
             CreatePaymentRequest request = new CreatePaymentRequest();
             request.Locale = Locale.TR.ToString();
             request.ConversationId = new Random().Next(1111, 9999).ToString();
-            request.Price = "1";
-            request.PaidPrice = "1.2";
-            //request.Price = "15";//checkoutHeaderDto.OrderTotal.ToString();
-            //request.PaidPrice = "15";//checkoutHeaderDto.OrderTotal.ToString();
+
             request.Currency = Currency.TRY.ToString();
             request.Installment = 1;
             request.BasketId = "B67832";
@@ -146,36 +143,23 @@ namespace Inveon.Services.ShoppingCartAPI.Controllers
             request.BillingAddress = billingAddress;
 
             List<BasketItem> basketItems = new List<BasketItem>();
-            BasketItem firstBasketItem = new BasketItem();
-            firstBasketItem.Id = "BI101";
-            firstBasketItem.Name = "Binocular";
-            firstBasketItem.Category1 = "Collectibles";
-            firstBasketItem.Category2 = "Accessories";
-            firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
-            firstBasketItem.Price = "0.3";
-            basketItems.Add(firstBasketItem);
 
-            BasketItem secondBasketItem = new BasketItem();
-            secondBasketItem.Id = "BI102";
-            secondBasketItem.Name = "Game code";
-            secondBasketItem.Category1 = "Game";
-            secondBasketItem.Category2 = "Online Game Items";
-            secondBasketItem.ItemType = BasketItemType.VIRTUAL.ToString();
-            secondBasketItem.Price = "0.5";
-            basketItems.Add(secondBasketItem);
+            foreach (var cartDetail in checkoutHeaderDto.CartDetails)
+            {
+                var product = cartDetail.Product;
+                BasketItem basketItem = new BasketItem();
+                basketItem.Id = "BI10" + product.ProductId.ToString();
+                basketItem.Name = product.Name;
+                basketItem.Category1 = product.CategoryName;
+                basketItem.Price = product.Price.ToString();
+                basketItem.ItemType = BasketItemType.PHYSICAL.ToString();
 
-            BasketItem thirdBasketItem = new BasketItem();
-            thirdBasketItem.Id = "BI103";
-            thirdBasketItem.Name = "Usb";
-            thirdBasketItem.Category1 = "Electronics";
-            thirdBasketItem.Category2 = "Usb / Cable";
-            thirdBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
-            thirdBasketItem.Price = "0.2";
-            basketItems.Add(thirdBasketItem);
+                basketItems.Add(basketItem);
+            }
+
+            request.Price = basketItems.Sum(x=>Convert.ToDecimal(x.Price)).ToString();
+            request.PaidPrice = (Convert.ToDouble(request.Price) - couponDiscount).ToString();
             request.BasketItems = basketItems;
-
-            //Payment payment = Payment.Create(request, options);
-
             return Payment.Create(request, options);
         }
     }
