@@ -151,8 +151,8 @@ namespace Inveon.Services.ShoppingCartAPI.Controllers
                 basketItem.Id = "BI10" + product.ProductId.ToString();
                 basketItem.Name = product.Name;
                 basketItem.Category1 = product.CategoryName;
-                basketItem.Price = product.Price.ToString();
-                basketItem.ItemType = BasketItemType.PHYSICAL.ToString();
+                basketItem.Price = (product.Price * cartDetail.Count).ToString();
+                basketItem.ItemType = BasketItemType.PHYSICAL.ToString();               
 
                 basketItems.Add(basketItem);
             }
