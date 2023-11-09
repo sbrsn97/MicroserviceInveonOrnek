@@ -1,9 +1,12 @@
-﻿using Inveon.MessageBus;
-using Inveon.Services.ShoppingCartAPI.Models.Dto;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Inveon.Services.ShoppingCartAPI.Messages
+namespace Inveon.Services.Email.Models
 {
-    public class CheckoutHeaderDto : BaseMessage
+    public class CheckoutHeaderDto
     {
         public int CartHeaderId { get; set; }
         public string UserId { get; set; }
