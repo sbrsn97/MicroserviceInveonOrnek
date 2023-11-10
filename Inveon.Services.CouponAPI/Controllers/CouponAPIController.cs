@@ -25,11 +25,16 @@ namespace Inveon.Services.CouponAPI.Controllers
             {
                 var coupon = await _couponRepository.GetCouponByCode(code);
                 _response.Result = coupon;
+                _response.IsSuccess = true;
+                if (coupon is null)
+                {
+                    _response.IsSuccess = false;
+                    _response.ErrorMessages = new List<string>() { "This coupon code is not valid." };
+                }
             }
             catch (Exception ex)
             {
-                _response.IsSuccess = false;
-                _response.ErrorMessages = new List<string>() { ex.ToString() };
+                
             }
             return _response;
         }

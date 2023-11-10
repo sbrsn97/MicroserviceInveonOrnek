@@ -66,7 +66,12 @@ namespace Inveon.Services.ShoppingCartAPI.Controllers
                 ////rabbitMQ
 
                 Payment payment = OdemeIslemi(checkoutHeader, couponDiscount);
-                _rabbitMQCartMessageSender.SendMessage(checkoutHeader, "checkoutqueue");
+
+                if (payment.Status == "success")
+                {
+                    _rabbitMQCartMessageSender.SendMessage(checkoutHeader, "checkoutqueue");
+                }
+
                 await _cartRepository.ClearCart(checkoutHeader.UserId);
             }
             catch (Exception ex)

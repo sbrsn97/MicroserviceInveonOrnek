@@ -36,7 +36,8 @@ namespace Inveon.Web.Areas.Customer.Controllers
             {
                 return RedirectToAction(nameof(CartIndex));
             }
-            return View();
+
+            return NoContent();
         }
 
         [HttpPost]
@@ -51,7 +52,7 @@ namespace Inveon.Web.Areas.Customer.Controllers
             {
                 return RedirectToAction(nameof(CartIndex));
             }
-            return View();
+            return NoContent();
         }
 
         public async Task<IActionResult> Remove(int cartDetailsId)
@@ -117,7 +118,7 @@ namespace Inveon.Web.Areas.Customer.Controllers
                 if (!string.IsNullOrEmpty(cartDto.CartHeader.CouponCode))
                 {
                     var coupon = await _couponService.GetCoupon<ResponseDto>(cartDto.CartHeader.CouponCode, accessToken);
-                    if (coupon != null && coupon.IsSuccess)
+                    if (coupon.Result != null && coupon.IsSuccess)
                     {
                         var couponObj = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(coupon.Result));
                         cartDto.CartHeader.DiscountTotal = couponObj.DiscountAmount;
