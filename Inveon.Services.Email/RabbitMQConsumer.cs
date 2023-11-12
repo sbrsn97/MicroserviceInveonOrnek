@@ -34,7 +34,7 @@ namespace Inveon.Services.Email
                 using (var channel = connection.CreateModel())
                 {
                     //baðlanacaðýmýz kuyruðun adýný belirtiyoruz 
-                    channel.QueueDeclare(queue: "checkoutqueue",
+                    channel.QueueDeclare(queue: "emailqueue",
                                        durable: false,
                                        exclusive: false,
                                        autoDelete: false,
@@ -55,7 +55,7 @@ namespace Inveon.Services.Email
 
                     };
 
-                    channel.BasicConsume(queue: "checkoutqueue",
+                    channel.BasicConsume(queue: "emailqueue",
                                      autoAck: true,
                                      consumer: consumer);
                     

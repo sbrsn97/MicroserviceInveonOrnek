@@ -56,7 +56,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Inveon.Services.CouponAPI", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Inveon.Services.OrderAPI", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"Enter 'Bearer' [space] and your token",
