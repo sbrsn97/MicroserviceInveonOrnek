@@ -82,6 +82,7 @@ namespace Inveon.Services.ShoppingCartAPI.Controllers
             }
             return _response;
         }
+        [ApiExplorerSettings(IgnoreApi = true)]
         public Payment OdemeIslemi(CheckoutHeaderDto checkoutHeaderDto, double couponDiscount)
         {
 
