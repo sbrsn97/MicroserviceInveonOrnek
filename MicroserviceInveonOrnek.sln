@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inveon.MessageBus", "Inveon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inveon.Services.CouponAPI", "Inveon.Services.CouponAPI\Inveon.Services.CouponAPI.csproj", "{9F3EAFAF-ED02-476F-BC4F-FD12BCBB9FB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inveon.Services.Email", "Inveon.Services.Email\Inveon.Services.Email.csproj", "{A67733B9-1160-4EED-AB85-5089A1740555}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inveon.Services.Email", "Inveon.Services.Email\Inveon.Services.Email.csproj", "{A67733B9-1160-4EED-AB85-5089A1740555}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inveon.Services.OrderAPI", "Inveon.Services.OrderAPI\Inveon.Services.OrderAPI.csproj", "{B34FACB1-5A4E-4B8B-A4CB-1B40BAEC7623}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +69,10 @@ Global
 		{A67733B9-1160-4EED-AB85-5089A1740555}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A67733B9-1160-4EED-AB85-5089A1740555}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A67733B9-1160-4EED-AB85-5089A1740555}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B34FACB1-5A4E-4B8B-A4CB-1B40BAEC7623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B34FACB1-5A4E-4B8B-A4CB-1B40BAEC7623}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B34FACB1-5A4E-4B8B-A4CB-1B40BAEC7623}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B34FACB1-5A4E-4B8B-A4CB-1B40BAEC7623}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +86,7 @@ Global
 		{94BBEF39-0AC8-49C5-B4C6-1CDDA45D24B0} = {0E7F0FF1-97BC-432F-82A1-404FE6DA911F}
 		{9F3EAFAF-ED02-476F-BC4F-FD12BCBB9FB1} = {182AE330-8684-445F-B8F6-98D6BF77C883}
 		{A67733B9-1160-4EED-AB85-5089A1740555} = {182AE330-8684-445F-B8F6-98D6BF77C883}
+		{B34FACB1-5A4E-4B8B-A4CB-1B40BAEC7623} = {182AE330-8684-445F-B8F6-98D6BF77C883}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3407DF12-8AEC-4460-82D4-CD450C8D1C6C}
